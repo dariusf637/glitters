@@ -24,7 +24,7 @@ $poster    = GLITTERS_URI . '/assets/images/salon-wash.jpg';
 ?>
 <section class="section section-interior" id="interior">
 	<div class="wrap section-head">
-		<p class="eyebrow">Интерьер салона</p>
+		<p class="eyebrow"><?php echo esc_html(glitters_text('eyebrow_interior')); ?></p>
 		<h2 class="interior-lead"><?php echo esc_html(glitters_text('interior_text')); ?></h2>
 	</div>
 
@@ -32,12 +32,12 @@ $poster    = GLITTERS_URI . '/assets/images/salon-wash.jpg';
 		<?php if ($show_film && file_exists(GLITTERS_DIR . '/assets/video/salon-interieur.mp4')) : ?>
 			<figure class="look-item look-video">
 				<div class="look-media">
-					<video class="salon-film" muted loop playsinline preload="metadata" poster="<?php echo esc_url($poster); ?>" aria-label="Короткий фильм об интерьере салона Glitters">
+					<video class="salon-film" muted loop playsinline preload="metadata" poster="<?php echo esc_url($poster); ?>" aria-label="<?php echo esc_attr(glitters_text('film_alt')); ?>">
 						<source src="<?php echo esc_url($video); ?>" type="video/mp4">
 					</video>
-					<button class="film-toggle" type="button" aria-pressed="true">Пауза</button>
+					<button class="film-toggle" type="button" aria-pressed="true" data-pause="<?php echo esc_attr(glitters_text('film_pause')); ?>" data-play="<?php echo esc_attr(glitters_text('film_play')); ?>"><?php echo esc_html(glitters_text('film_pause')); ?></button>
 				</div>
-				<figcaption>Фильм о зале</figcaption>
+				<figcaption><?php echo esc_html(glitters_text('film_caption')); ?></figcaption>
 			</figure>
 		<?php endif; ?>
 

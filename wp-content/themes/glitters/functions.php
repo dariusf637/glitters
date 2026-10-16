@@ -9,10 +9,15 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-define('GLITTERS_VERSION', '1.0.0');
+if (!defined('DISALLOW_FILE_EDIT')) {
+	define('DISALLOW_FILE_EDIT', true);
+}
+
+define('GLITTERS_VERSION', '1.2.1');
 define('GLITTERS_DIR', get_template_directory());
 define('GLITTERS_URI', get_template_directory_uri());
 
+require GLITTERS_DIR . '/inc/security.php';
 require GLITTERS_DIR . '/inc/helpers.php';
 require GLITTERS_DIR . '/inc/icons.php';
 require GLITTERS_DIR . '/inc/cpt.php';
@@ -117,6 +122,10 @@ function glitters_cleanup_head() {
 	remove_action('wp_head', 'wlwmanifest_link');
 	remove_action('wp_head', 'wp_shortlink_wp_head');
 	remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10);
+	remove_action('wp_head', 'wp_oembed_add_discovery_links');
+	remove_action('wp_head', 'wp_oembed_add_host_js');
+	remove_action('wp_head', 'rest_output_link_wp_head');
+	remove_action('template_redirect', 'rest_output_link_header', 11);
 }
 
 /**

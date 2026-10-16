@@ -8,17 +8,17 @@
 if (!defined('ABSPATH')) {
 	exit;
 }
-$pillars = array(
-	array('room', 'Приватность', 'Камерный зал и запись по времени. Визит проходит без суеты и постороннего внимания.'),
-	array('person', 'Персональное внимание', 'Форма, оттенок и уход подбираются лично. Решение объясняем спокойно и по существу.'),
-	array('scissor', 'Опыт мастеров', 'Точная техника, аккуратная работа с цветом и уважение к качеству волоса.'),
-	array('drop', 'Комфорт', 'Продуманное пространство, профессиональные средства и деликатное отношение к вашему времени.'),
-);
+$icons   = array('room', 'person', 'scissor', 'drop');
+$pillars = array();
+foreach ($icons as $index => $icon) {
+	$n         = $index + 1;
+	$pillars[] = array($icon, glitters_text('pillar_' . $n . '_title'), glitters_text('pillar_' . $n . '_text'));
+}
 ?>
 <section class="section" id="about">
 	<div class="wrap about-grid">
 		<div>
-			<p class="eyebrow">О салоне</p>
+			<p class="eyebrow"><?php echo esc_html(glitters_text('eyebrow_about')); ?></p>
 			<h2><?php echo esc_html(glitters_text('about_title')); ?></h2>
 			<div class="prose-lead"><?php echo glitters_paragraphs(glitters_text('about_text')); ?></div>
 		</div>

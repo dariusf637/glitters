@@ -21,26 +21,43 @@ function glitters_legal_content($content) {
 	if (!is_page()) {
 		return $content;
 	}
-	$id = (int) get_queried_object_id();
-	if ($id && $id === (int) get_option('glitters_page_privacy')) {
-		return glitters_privacy_html();
+	$id      = (int) get_queried_object_id();
+	$privacy = (int) get_option('glitters_page_privacy');
+	$legal   = (int) get_option('glitters_page_legal');
+	if ($id !== $privacy && $id !== $legal) {
+		return $content;
 	}
-	if ($id && $id === (int) get_option('glitters_page_legal')) {
-		return glitters_legal_html();
+	if (trim(wp_strip_all_tags($content)) === '') {
+		$content = $id === $privacy ? glitters_privacy_html() : glitters_legal_html();
 	}
-	return $content;
+	return glitters_fill_tokens($content);
+}
+
+/**
+ * Replace contact tokens inside an editable legal page.
+ *
+ * @param string $html HTML.
+ * @return string
+ */
+function glitters_fill_tokens($html) {
+	return strtr(
+		$html,
+		array(
+			'{{phone}}'   => esc_html(glitters_get('phone_display')),
+			'{{address}}' => esc_html(glitters_get('address')),
+			'{{hours}}'   => esc_html(glitters_get('hours')),
+		)
+	);
 }
 
 /**
  * @return string
  */
 function glitters_privacy_html() {
-	$phone   = esc_html(glitters_get('phone_display'));
-	$address = esc_html(glitters_get('address'));
-	return <<<HTML
+	return <<<'HTML'
 <p>Настоящая политика описывает, как салон красоты Glitters обрабатывает персональные данные посетителей сайта. Текст подготовлен для публикации и должен быть дополнен организационно-правовой формой, ИНН и ОГРН владельца до открытия сайта.</p>
 <h2>1. Оператор</h2>
-<p>Оператор: салон красоты Glitters.<br>Адрес: {$address}.<br>Телефон: {$phone}.</p>
+<p>Оператор: салон красоты Glitters.<br>Адрес: {{address}}.<br>Телефон: {{phone}}.</p>
 <p>Полное наименование юридического лица или статус самозанятого, ИНН и ОГРН владелец добавляет в этот абзац.</p>
 <h2>2. Какие данные мы получаем</h2>
 <p>Через форму на сайте: имя, телефон, выбранная услуга и текст сообщения. Этих сведений достаточно, чтобы перезвонить и подтвердить визит. Адрес электронной почты и паспортные данные через форму не запрашиваются.</p>
@@ -56,7 +73,7 @@ function glitters_privacy_html() {
 <h2>7. Файлы cookie</h2>
 <p>Сайт не использует рекламные cookie. Технические cookie могут появляться при входе администратора и при работе плагинов кеша или безопасности, если они установлены. Онлайн-запись на стороне Яндекса и Dikidi использует cookie этих сайтов.</p>
 <h2>8. Ваши права</h2>
-<p>Вы можете запросить сведения об обработке, уточнение, удаление или отзыв согласия. Для этого позвоните по телефону {$phone} или напишите через форму сайта. Отзыв согласия не влияет на законность обработки до момента отзыва.</p>
+<p>Вы можете запросить сведения об обработке, уточнение, удаление или отзыв согласия. Для этого позвоните по телефону {{phone}} или напишите через форму сайта. Отзыв согласия не влияет на законность обработки до момента отзыва.</p>
 <h2>9. Защита</h2>
 <p>Доступ к заявкам ограничен учётной записью администратора. Рекомендуется подключать сайт по HTTPS и не передавать пароль третьим лицам.</p>
 <h2>10. Изменения</h2>
@@ -68,10 +85,8 @@ HTML;
  * @return string
  */
 function glitters_legal_html() {
-	$phone   = esc_html(glitters_get('phone_display'));
-	$address = esc_html(glitters_get('address'));
-	return <<<HTML
-<p>Салон красоты Glitters. {$address}. Телефон: {$phone}. Ежедневно с 09:00 до 21:00.</p>
+	return <<<'HTML'
+<p>Салон красоты Glitters. {{address}}. Телефон: {{phone}}. {{hours}}.</p>
 <h2>Сведения о салоне</h2>
 <p>Glitters — женский салон красоты и студия ухода за волосами. Организационно-правовую форму, ИНН и ОГРН владелец указывает здесь до публикации.</p>
 <h2>Характер информации</h2>

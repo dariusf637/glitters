@@ -2,6 +2,40 @@
 	var header = document.querySelector(".site-header");
 	var toggle = document.querySelector(".nav-toggle");
 	var nav = document.querySelector(".site-nav");
+	var themeBtn = document.querySelector(".theme-toggle");
+	var themeKey = "glitters-theme";
+
+	function themeIsDark() {
+		return document.documentElement.getAttribute("data-theme") === "dark";
+	}
+
+	function paintTheme(dark) {
+		document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+		document.querySelectorAll('meta[name="theme-color"]').forEach(function (meta) {
+			meta.setAttribute("content", dark ? "#141210" : "#F6F3EE");
+		});
+		if (!themeBtn) return;
+		themeBtn.setAttribute("aria-pressed", dark ? "true" : "false");
+		themeBtn.setAttribute("aria-label", dark ? "Включить дневной режим" : "Включить ночной режим");
+	}
+
+	paintTheme(themeIsDark());
+	if (themeBtn) {
+		themeBtn.addEventListener("click", function () {
+			var next = !themeIsDark();
+			try { localStorage.setItem(themeKey, next ? "dark" : "light"); } catch (e) {}
+			paintTheme(next);
+		});
+	}
+	var scheme = window.matchMedia("(prefers-color-scheme: dark)");
+	if (scheme.addEventListener) {
+		scheme.addEventListener("change", function () {
+			var saved = null;
+			try { saved = localStorage.getItem(themeKey); } catch (e) {}
+			if (saved === "dark" || saved === "light") return;
+			paintTheme(scheme.matches);
+		});
+	}
 
 	function onScroll() {
 		if (!header) return;
@@ -15,7 +49,7 @@
 		if (header) header.classList.remove("is-open");
 		if (toggle) {
 			toggle.setAttribute("aria-expanded", "false");
-			toggle.setAttribute("aria-label", "Открыть меню");
+			toggle.setAttribute("aria-label", toggle.getAttribute("data-open") || "Открыть меню");
 		}
 	}
 
@@ -24,7 +58,7 @@
 			var open = document.body.classList.toggle("nav-open");
 			if (header) header.classList.toggle("is-open", open);
 			toggle.setAttribute("aria-expanded", open ? "true" : "false");
-			toggle.setAttribute("aria-label", open ? "Закрыть меню" : "Открыть меню");
+			toggle.setAttribute("aria-label", open ? (toggle.getAttribute("data-close") || "Закрыть меню") : (toggle.getAttribute("data-open") || "Открыть меню"));
 		});
 		nav.querySelectorAll("a").forEach(function (link) {
 			link.addEventListener("click", closeNav);
@@ -59,11 +93,13 @@
 
 	document.querySelectorAll(".salon-film").forEach(function (video) {
 		var button = video.parentElement.querySelector(".film-toggle");
+		var pauseLabel = button ? (button.getAttribute("data-pause") || "Пауза") : "Пауза";
+		var playLabel = button ? (button.getAttribute("data-play") || "Смотреть") : "Смотреть";
 		if (reduce) {
 			video.removeAttribute("autoplay");
 			video.pause();
 			if (button) {
-				button.textContent = "Смотреть";
+				button.textContent = playLabel;
 				button.setAttribute("aria-pressed", "false");
 			}
 		} else {
@@ -71,7 +107,7 @@
 			if (play && play.catch) {
 				play.catch(function () {
 					if (button) {
-						button.textContent = "Смотреть";
+						button.textContent = playLabel;
 						button.setAttribute("aria-pressed", "false");
 					}
 				});
@@ -81,11 +117,11 @@
 		button.addEventListener("click", function () {
 			if (video.paused) {
 				video.play();
-				button.textContent = "Пауза";
+				button.textContent = pauseLabel;
 				button.setAttribute("aria-pressed", "true");
 			} else {
 				video.pause();
-				button.textContent = "Смотреть";
+				button.textContent = playLabel;
 				button.setAttribute("aria-pressed", "false");
 			}
 		});

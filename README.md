@@ -63,6 +63,12 @@ Ne pas installer Elementor : la page est déjà composée et plus légère ainsi
 - **UpdraftPlus** pour les sauvegardes hors du serveur.
 - **WP Mail SMTP** (boîte Yandex ou Mail.ru). Les demandes sont aussi dans Glitters → Заявки si le courrier n’arrive pas.
 
+## Mobile et sécurité
+
+Sous 860 px, la photo d’ouverture est au-dessus du texte, les boutons passent en pleine largeur, et la barre « Позвонить / Записаться онлайн » reste fixée. Sous 420 px, la galerie passe en une colonne.
+
+Le thème envoie `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options` et `Permissions-Policy`, retire les pingbacks XML-RPC, masque la liste publique des comptes et refuse les archives d’auteurs. Le formulaire limite la longueur des champs, ignore un envoi instantané et garde le pot de miel. Wordfence reste utile pour le pare-feu et les tentatives de connexion.
+
 ## Avant la mise en ligne
 
 Compléter l’ИНН et la forme juridique dans les pages « Политика конфиденциальности » et « Правовая информация » : le texte le signale. Vérifier le téléphone, les deux liens de réservation, puis remplacer les cadres seulement si de nouvelles photos sont meilleures que celles déjà en place.

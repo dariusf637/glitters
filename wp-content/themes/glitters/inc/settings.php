@@ -42,18 +42,21 @@ function glitters_dashboard_page() {
 	}
 	echo '<div class="wrap">';
 	echo '<h1>Glitters</h1>';
-	echo '<p>Сайт уже показывает реальный интерьер: фотографию зала и короткий фильм. Цены, мастеров и отзывы лучше заполнить до открытия.</p>';
+	echo '<p>Светлая и тёмная тема переключаются сами: сайт повторяет режим телефона или компьютера. Менять её вручную не нужно.</p>';
+	echo '<p>Всё, что видит гость, правится здесь, без правки файлов темы.</p>';
 	echo '<ol>';
-	echo '<li><a href="' . esc_url(admin_url('edit.php?post_type=glitters_service')) . '">Услуги</a> — впишите цену «от» числом. Пустая цена честно пишет «стоимость уточняется при записи».</li>';
-	echo '<li><a href="' . esc_url(admin_url('edit.php?post_type=glitters_master')) . '">Мастера</a> — имя, специализация, короткая биография и портрет. Пока список пуст, на сайте три карточки специализаций без вымышленных имён.</li>';
-	echo '<li><a href="' . esc_url(admin_url('edit.php?post_type=glitters_review')) . '">Отзывы</a> — только реальные. Вымышленные отзывы не добавлены.</li>';
-	echo '<li><a href="' . esc_url(admin_url('edit.php?post_type=glitters_interior')) . '">Интерьер</a> — новые фотографии заменят встроенные кадры. Фильм остаётся, пока он включён в настройках.</li>';
+	echo '<li><a href="' . esc_url(admin_url('edit.php?post_type=glitters_service')) . '">Услуги</a> — название, описание и цена «от» числом. Пустая цена показывает фразу из настроек.</li>';
+	echo '<li><a href="' . esc_url(admin_url('edit.php?post_type=glitters_master')) . '">Мастера</a> — имя, специализация, биография и портрет. Пока список пуст, на сайте три карточки из настроек, без вымышленных имён.</li>';
+	echo '<li><a href="' . esc_url(admin_url('edit.php?post_type=glitters_review')) . '">Отзывы</a> — только реальные. Имя гостя — заголовок записи, текст отзыва — содержимое, оценка — поле под редактором.</li>';
+	echo '<li><a href="' . esc_url(admin_url('edit.php?post_type=glitters_interior')) . '">Интерьер</a> — фотография и подпись. Опубликованные снимки заменяют встроенные кадры.</li>';
+	echo '<li><a href="' . esc_url(admin_url('nav-menus.php')) . '">Меню</a> — назначьте меню на «Главное меню», если нужны другие пункты. Пока меню не назначено, подписи берутся из настроек.</li>';
+	echo '<li><a href="' . esc_url(admin_url('edit.php?post_type=page')) . '">Страницы</a> — политика и правовая информация редактируются как обычные страницы. Метки {{phone}}, {{address}} и {{hours}} подставляют телефон, адрес и часы из настроек.</li>';
+	echo '<li><a href="' . esc_url(admin_url('customize.php')) . '">Логотип</a> — Внешний вид → Настроить → Свойства сайта.</li>';
 	echo '<li><a href="' . esc_url(admin_url('edit.php?post_type=glitters_request')) . '">Заявки</a> — сообщения формы хранятся здесь, даже если письмо не ушло.</li>';
 	if (current_user_can('manage_options')) {
-		echo '<li><a href="' . esc_url(admin_url('admin.php?page=glitters-settings')) . '">Настройки</a> — телефон, ссылки записи, WhatsApp, Telegram, карта и тексты.</li>';
+		echo '<li><a href="' . esc_url(admin_url('admin.php?page=glitters-settings')) . '">Настройки</a> — телефон, запись, карта и все тексты главной.</li>';
 	}
 	echo '</ol>';
-	echo '<p>Фильм на сайте — фрагмент вашей видеозаписи, где видны зал и кресло. Служебный вход и хозяйственная зона в ролик не вошли.</p>';
 	echo '</div>';
 }
 
@@ -104,18 +107,23 @@ function glitters_settings_page() {
 	$film = (int) glitters_get('show_film') === 1;
 	echo '<p><label><input type="checkbox" name="show_film" value="1" ' . checked($film, true, false) . '> Показывать короткий фильм об интерьере</label></p>';
 
-	echo '<h2>Тексты главной</h2><table class="form-table">';
-	foreach (glitters_default_texts() as $key => $default) {
-		$long = in_array($key, array('about_text'), true);
-		echo '<tr><th scope="row"><label for="tx_' . esc_attr($key) . '">' . esc_html($key) . '</label></th><td>';
-		if ($long) {
-			echo '<textarea class="large-text" rows="6" id="tx_' . esc_attr($key) . '" name="tx_' . esc_attr($key) . '">' . esc_textarea(glitters_text($key)) . '</textarea>';
-		} else {
-			echo '<input class="large-text" type="text" id="tx_' . esc_attr($key) . '" name="tx_' . esc_attr($key) . '" value="' . esc_attr(glitters_text($key)) . '">';
+	echo '<h2>Тексты</h2>';
+	echo '<p>Услуги, мастера, отзывы, фотографии интерьера и юридические страницы правятся в своих разделах меню слева. Здесь — остальные фразы главной. Пустое поле возвращает исходный текст.</p>';
+	$labels = glitters_text_labels();
+	foreach (glitters_text_groups() as $group => $keys) {
+		echo '<h3>' . esc_html($group) . '</h3><table class="form-table">';
+		foreach ($keys as $key) {
+			$label = $labels[$key] ?? $key;
+			echo '<tr><th scope="row"><label for="tx_' . esc_attr($key) . '">' . esc_html($label) . '</label></th><td>';
+			if (glitters_text_is_long($key)) {
+				echo '<textarea class="large-text" rows="5" id="tx_' . esc_attr($key) . '" name="tx_' . esc_attr($key) . '">' . esc_textarea(glitters_text($key)) . '</textarea>';
+			} else {
+				echo '<input class="large-text" type="text" id="tx_' . esc_attr($key) . '" name="tx_' . esc_attr($key) . '" value="' . esc_attr(glitters_text($key)) . '">';
+			}
+			echo '</td></tr>';
 		}
-		echo '</td></tr>';
+		echo '</table>';
 	}
-	echo '</table>';
 
 	echo '<h2>Проверка сайта</h2><table class="form-table">';
 	glitters_settings_field('yandex_verification', 'Код Яндекс.Вебмастер', 'text');

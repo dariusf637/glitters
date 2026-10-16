@@ -13,7 +13,7 @@ if (!defined('ABSPATH')) {
 	<div class="wrap footer-grid">
 		<div>
 			<p class="footer-brand">Glitters</p>
-			<p>Женский салон красоты и студия ухода за волосами.</p>
+			<p><?php echo esc_html(glitters_text('footer_about')); ?></p>
 		</div>
 		<nav aria-label="Нижнее меню">
 			<ul class="footer-nav">
@@ -28,23 +28,23 @@ if (!defined('ABSPATH')) {
 			<p><?php echo esc_html(glitters_get('hours')); ?></p>
 		</div>
 		<div class="footer-book">
-			<a href="<?php echo esc_url(glitters_get('yandex_booking')); ?>" target="_blank" rel="noopener noreferrer">Записаться через Яндекс</a>
-			<a href="<?php echo esc_url(glitters_get('dikidi')); ?>" target="_blank" rel="noopener noreferrer">Записаться через Dikidi</a>
+			<a href="<?php echo esc_url(glitters_get('yandex_booking')); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html(glitters_text('btn_yandex')); ?></a>
+			<a href="<?php echo esc_url(glitters_get('dikidi')); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html(glitters_text('btn_dikidi')); ?></a>
 		</div>
 	</div>
 	<div class="wrap footer-base">
-		<p>© <?php echo esc_html(wp_date('Y')); ?> Glitters. Санкт-Петербург.</p>
+		<p>© <?php echo esc_html(wp_date('Y')); ?> <?php echo esc_html(glitters_text('footer_place')); ?></p>
 		<p>
-			<a href="<?php echo esc_url(glitters_page_url('legal')); ?>">Правовая информация</a>
-			<a href="<?php echo esc_url(glitters_page_url('privacy')); ?>">Политика конфиденциальности</a>
+			<a href="<?php echo esc_url(glitters_page_url('legal')); ?>"><?php echo esc_html(glitters_page_label('legal')); ?></a>
+			<a href="<?php echo esc_url(glitters_page_url('privacy')); ?>"><?php echo esc_html(glitters_page_label('privacy')); ?></a>
 		</p>
-		<p>Информация на сайте не является публичной офертой.</p>
+		<p><?php echo esc_html(glitters_text('footer_offer')); ?></p>
 	</div>
 </footer>
 
 <div class="dock" role="navigation" aria-label="Быстрые действия">
-	<a class="dock-call" href="tel:<?php echo esc_attr(glitters_tel()); ?>">Позвонить</a>
-	<a class="dock-book" href="<?php echo esc_url(glitters_anchor('booking')); ?>">Записаться онлайн</a>
+	<a class="dock-call" href="tel:<?php echo esc_attr(glitters_tel()); ?>"><?php echo esc_html(glitters_text('btn_call')); ?></a>
+	<a class="dock-book" href="<?php echo esc_url(glitters_anchor('booking')); ?>"><?php echo esc_html(glitters_text('btn_book')); ?></a>
 </div>
 <?php wp_footer(); ?>
 </body>

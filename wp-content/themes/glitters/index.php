@@ -23,9 +23,9 @@ get_header();
 				</article>
 			<?php endwhile; ?>
 		<?php else : ?>
-			<h1>Ничего не найдено</h1>
-			<p>Вернитесь на главную или запишитесь онлайн.</p>
-			<p><a class="btn btn-primary" href="<?php echo esc_url(home_url('/')); ?>">На главную</a></p>
+			<h1><?php echo esc_html(glitters_text('notfound_title')); ?></h1>
+			<p><?php echo esc_html(glitters_text('notfound_text')); ?></p>
+			<p><a class="btn btn-primary" href="<?php echo esc_url(home_url('/')); ?>"><?php echo esc_html(glitters_text('btn_home')); ?></a></p>
 		<?php endif; ?>
 	</div>
 </main>

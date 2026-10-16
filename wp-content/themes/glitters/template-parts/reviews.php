@@ -14,7 +14,7 @@ $reviews = glitters_posts('glitters_review');
 	<div class="wrap">
 		<div class="section-head section-head-row">
 			<div>
-				<p class="eyebrow">Отзывы</p>
+				<p class="eyebrow"><?php echo esc_html(glitters_text('eyebrow_reviews')); ?></p>
 				<h2><?php echo esc_html(glitters_text('reviews_title')); ?></h2>
 			</div>
 			<?php if (count($reviews) > 1) : ?>
@@ -42,7 +42,7 @@ $reviews = glitters_posts('glitters_review');
 			</div>
 		<?php else : ?>
 			<div class="review review-empty">
-				<p class="review-text">После визита нам важно услышать, как вы себя чувствуете. Здесь появятся отзывы гостей — позже их можно дополнить отзывами с Яндекс Карт и Google.</p>
+				<p class="review-text"><?php echo esc_html(glitters_text('reviews_empty')); ?></p>
 			</div>
 		<?php endif; ?>
 	</div>

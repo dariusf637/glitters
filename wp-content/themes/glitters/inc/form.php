@@ -25,8 +25,21 @@ function glitters_handle_contact() {
 	}
 
 	$honeypot = isset($_POST['glitters_company']) ? trim((string) wp_unslash($_POST['glitters_company'])) : '';
-	if ($honeypot !== '') {
-		glitters_form_redirect(array('success' => 'Спасибо. Мы получили вашу заявку и свяжемся с вами, чтобы подтвердить визит.'));
+	$stamp    = isset($_POST['glitters_stamp']) ? sanitize_text_field(wp_unslash($_POST['glitters_stamp'])) : '';
+	$timing   = glitters_check_form_stamp($stamp);
+	$name_raw    = isset($_POST['guest_name']) ? (string) wp_unslash($_POST['guest_name']) : '';
+	$message_raw = isset($_POST['guest_message']) ? (string) wp_unslash($_POST['guest_message']) : '';
+	$link_count  = preg_match_all('#https?://#i', $message_raw);
+	$spam        = (bool) preg_match('#https?://|www\.#i', $name_raw) || $link_count > 2;
+	if ($honeypot !== '' || $timing === 'fast' || $spam) {
+		glitters_form_redirect(array('success' => glitters_text('form_success')));
+	}
+	if ($timing === 'invalid') {
+		glitters_form_redirect(
+			array(
+				'errors' => array('Сессия формы устарела. Обновите страницу и отправьте заявку ещё раз.'),
+			)
+		);
 	}
 
 	$ip    = isset($_SERVER['REMOTE_ADDR']) ? (string) $_SERVER['REMOTE_ADDR'] : '';
@@ -49,10 +62,10 @@ function glitters_handle_contact() {
 	$digits  = preg_replace('/\D/', '', $phone);
 	$errors  = array();
 
-	if (mb_strlen($name) < 2) {
-		$errors[] = 'Укажите имя.';
+	if (mb_strlen($name) < 2 || mb_strlen($name) > 80) {
+		$errors[] = 'Укажите имя — не длиннее 80 знаков.';
 	}
-	if (strlen($digits) < 10) {
+	if (strlen($digits) < 10 || mb_strlen($phone) > 30) {
 		$errors[] = 'Укажите телефон — не меньше 10 цифр.';
 	}
 	if ($consent !== '1') {
@@ -140,7 +153,7 @@ function glitters_handle_contact() {
 
 	glitters_form_redirect(
 		array(
-			'success' => 'Спасибо. Мы получили вашу заявку и свяжемся с вами, чтобы подтвердить визит.',
+			'success' => glitters_text('form_success'),
 		)
 	);
 }

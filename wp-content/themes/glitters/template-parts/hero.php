@@ -22,13 +22,13 @@ $hero_id = glitters_hero_attachment_id();
 					'class'         => 'hero-img',
 					'loading'       => 'eager',
 					'fetchpriority' => 'high',
-					'alt'           => 'Интерьер салона Glitters на улице Правды',
+					'alt'           => glitters_text('hero_alt'),
 				)
 			);
 		} else {
 			echo glitters_theme_image(
 				'assets/images/salon-hero.jpg',
-				'Интерьер салона Glitters: витрина средств и зона укладки',
+				glitters_text('hero_alt'),
 				array(
 					'class'         => 'hero-img',
 					'loading'       => 'eager',
@@ -44,8 +44,8 @@ $hero_id = glitters_hero_attachment_id();
 		<h1><?php echo esc_html(glitters_text('hero_title')); ?></h1>
 		<p class="lede"><?php echo esc_html(glitters_text('hero_subtitle')); ?></p>
 		<div class="hero-actions">
-			<a class="btn btn-light" href="<?php echo esc_url(glitters_anchor('booking')); ?>">Записаться онлайн</a>
-			<a class="btn btn-ghost" href="<?php echo esc_url(glitters_anchor('services')); ?>">Посмотреть услуги</a>
+			<a class="btn btn-light" href="<?php echo esc_url(glitters_anchor('booking')); ?>"><?php echo esc_html(glitters_text('btn_book')); ?></a>
+			<a class="btn btn-ghost" href="<?php echo esc_url(glitters_anchor('services')); ?>"><?php echo esc_html(glitters_text('btn_services')); ?></a>
 		</div>
 	</div>
 </section>

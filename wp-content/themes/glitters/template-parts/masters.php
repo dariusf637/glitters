@@ -12,9 +12,9 @@ $masters = glitters_posts('glitters_master');
 ?>
 <section class="section" id="masters">
 	<div class="wrap">
-		<p class="eyebrow">Мастера</p>
+		<p class="eyebrow"><?php echo esc_html(glitters_text('eyebrow_masters')); ?></p>
 		<h2><?php echo esc_html(glitters_text('masters_title')); ?></h2>
-		<p class="section-intro">Стрижка, цвет и укладка — в руках людей, которые работают спокойно и точно.</p>
+		<p class="section-intro"><?php echo esc_html(glitters_text('masters_intro')); ?></p>
 		<div class="masters-grid">
 			<?php if ($masters) : ?>
 				<?php foreach ($masters as $master) : ?>
