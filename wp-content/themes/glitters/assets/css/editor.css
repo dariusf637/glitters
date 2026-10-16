@@ -1,0 +1,11 @@
+body {
+	background: #f6f3ee;
+	color: #1c1a17;
+	font-family: Manrope, "Segoe UI", sans-serif;
+	font-size: 17px;
+	line-height: 1.7;
+}
+h1, h2, h3 {
+	font-family: "Times New Roman", Times, serif;
+	font-weight: 500;
+}

@@ -1,0 +1,63 @@
+{
+	"$schema": "https://schemas.wp.org/wp/6.4/theme.json",
+	"version": 3,
+	"settings": {
+		"appearanceTools": false,
+		"layout": {
+			"contentSize": "720px",
+			"wideSize": "1120px"
+		},
+		"color": {
+			"palette": [
+				{ "slug": "ivory", "color": "#F6F3EE", "name": "Слоновая кость" },
+				{ "slug": "champagne", "color": "#E7DCCB", "name": "Шампань" },
+				{ "slug": "pearl", "color": "#E4E0DA", "name": "Жемчуг" },
+				{ "slug": "ink", "color": "#1C1A17", "name": "Мягкий чёрный" },
+				{ "slug": "gold", "color": "#8C7349", "name": "Золото" }
+			]
+		},
+		"typography": {
+			"fontFamilies": [
+				{
+					"slug": "serif",
+					"name": "Cormorant Garamond",
+					"fontFamily": "\"Cormorant Garamond\", \"Times New Roman\", Times, serif"
+				},
+				{
+					"slug": "sans",
+					"name": "Manrope",
+					"fontFamily": "Manrope, \"Segoe UI\", sans-serif"
+				}
+			]
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "#F6F3EE",
+			"text": "#1C1A17"
+		},
+		"typography": {
+			"fontFamily": "Manrope, \"Segoe UI\", sans-serif",
+			"fontSize": "17px",
+			"lineHeight": "1.7"
+		},
+		"elements": {
+			"heading": {
+				"typography": {
+					"fontFamily": "\"Cormorant Garamond\", \"Times New Roman\", Times, serif",
+					"fontWeight": "500"
+				}
+			},
+			"link": {
+				"color": { "text": "#1C1A17" }
+			},
+			"button": {
+				"color": {
+					"background": "#1C1A17",
+					"text": "#F6F3EE"
+				},
+				"border": { "radius": "0px" }
+			}
+		}
+	}
+}
